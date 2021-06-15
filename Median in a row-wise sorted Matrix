@@ -1,0 +1,30 @@
+class Solution{   
+public:
+    int median(vector<vector<int>> &matrix, int r, int c){
+        // code here    
+        int lmt = (r*c +1)/2;
+        int max_ele = 0, min_ele = 2001;  //Due to constraints
+        for(int i=0;i<r;i++)
+        {
+            max_ele = max(max_ele, matrix[i][c-1]); //Finding the Maximum element in vector
+            min_ele = min(min_ele, matrix[i][0]);   //Finding the Minnimum element in the vector
+        }
+        
+        while(max_ele > min_ele)
+        {
+            int mid = (max_ele + min_ele)/2;
+            int count = 0;
+            
+            //Finding number of elements smaller than mid
+            for(int i=0;i<r;i++)
+                count+= (upper_bound(matrix[i].begin(),matrix[i].end(),mid) - matrix[i].begin()); 
+            
+            //For a number to be median, there should be (r*c)/2 numbers smaller than that number
+            if(count < lmt)
+                min_ele = mid + 1;
+            else
+                max_ele = mid;
+        }
+        return min_ele;
+    }
+};
